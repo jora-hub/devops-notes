@@ -26,6 +26,6 @@ jobs:
         run: |
           cd 03-docker
           # Собираем образ с правильным тегом (не забудь поменять логин!)
-          docker build -t ТВОЙ_ЛОГИН/tiny-app:latest .
+          docker build -t joraa/tiny-app:latest .
           # Отправляем в реестр
-          docker push ТВОЙ_ЛОГИН/tiny-app:latest
+          docker push joraa/tiny-app:latest
