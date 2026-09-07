@@ -1,27 +1,31 @@
+
 name: My First CI Pipeline
 
-# 1. Триггер: Запускать пайплайн при каждом git push
 on: [push]
 
-# 2. Сами задачи (Джобы)
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest # GitHub выделит нам чистый сервер на Ubuntu для работы
+  build-and-push:
+    runs-on: ubuntu-latest
 
     steps:
-      # Шаг 1: Скачать код из репозитория
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Шаг 2: Линтер (Имитация проверки)
       - name: Run Linter
         run: |
           echo "Запускаю проверку синтаксиса..."
           echo "Ошибок нет! Код идеален."
 
-      # Шаг 3: Сборка Docker-образа
-      - name: Build Docker Image
-        # Мы переходим в папку 03-docker, где лежит наш старый Dockerfile, и собираем его
+      # НОВЫЙ ШАГ: Авторизация в Docker Hub
+      - name: Login to Docker Hub
+        # Здесь мы достаем спрятанные пароли через спец. синтаксис GitHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      # ОБНОВЛЕННЫЙ ШАГ: Сборка и отправка
+      - name: Build and Push Docker Image
         run: |
           cd 03-docker
-          docker build -t my-test-image .
+          # Собираем образ с правильным тегом (не забудь поменять логин!)
+          docker build -t ТВОЙ_ЛОГИН/tiny-app:latest .
+          # Отправляем в реестр
+          docker push ТВОЙ_ЛОГИН/tiny-app:latest
