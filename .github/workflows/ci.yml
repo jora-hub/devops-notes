@@ -1,0 +1,27 @@
+name: My First CI Pipeline
+
+# 1. Триггер: Запускать пайплайн при каждом git push
+on: [push]
+
+# 2. Сами задачи (Джобы)
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # GitHub выделит нам чистый сервер на Ubuntu для работы
+
+    steps:
+      # Шаг 1: Скачать код из репозитория
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Шаг 2: Линтер (Имитация проверки)
+      - name: Run Linter
+        run: |
+          echo "Запускаю проверку синтаксиса..."
+          echo "Ошибок нет! Код идеален."
+
+      # Шаг 3: Сборка Docker-образа
+      - name: Build Docker Image
+        # Мы переходим в папку 03-docker, где лежит наш старый Dockerfile, и собираем его
+        run: |
+          cd 03-docker
+          docker build -t my-test-image .
