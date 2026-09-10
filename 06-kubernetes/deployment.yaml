@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: nginx
@@ -17,3 +17,12 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
+        # ДОБАВЛЯЕМ СЮДА: Куда монтировать
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html
+      # И СЮДА: Откуда брать данные
+      volumes:
+      - name: html-volume
+        configMap:
+          name: nginx-index-html

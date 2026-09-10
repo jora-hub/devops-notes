@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-index-html
+data:
+  index.html: |
+    <html>
+      <body>
+        <h1>Привет из Kubernetes ConfigMap!</h1>
+        <p>Я работаю на кластере Minikube.</p>
+      </body>
+    </html>
